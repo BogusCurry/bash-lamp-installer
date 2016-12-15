@@ -66,8 +66,4 @@ if [ -f /etc/lsb-release ]; then
         else
                 echo "Unsupported operating system"
         fi
-
-else
-        echo "Unsupported operating system"
 fi
-
