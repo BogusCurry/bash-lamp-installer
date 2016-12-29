@@ -4,7 +4,7 @@ LAMP installer setting up Apache, PHP, MySQL, Holland and attempts to set some s
 
 ### Purpose
 
-There are many LAMP installation scripts floating around the internet.  This is simply just another one to add to the mix.  Its simply customized to fit the majority of the use cases I run into, and should be ready for use right out of the box.  
+There are many LAMP installation scripts floating around the internet.  This is simply just another one to add to the mix.  It is customized to fit the majority of the use cases I run into, and should be ready for use right out of the box.  
 
 ### Supported OS's
 
