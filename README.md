@@ -4,7 +4,7 @@ LAMP installer setting up Apache, PHP, MySQL, Holland and attempts to set some s
 
 ### Purpose
 
-There are many LAMP installation scripts floating around the internet.  This is simply one more customized to fit the majority of the use cases I run into.
+There are many LAMP installation scripts floating around the internet.  This is simply just another one to add to the mix.  Its simply customized to fit the majority of the use cases I run into, and should be ready for use right out of the box.  
 
 ### Supported OS's
 
@@ -39,9 +39,10 @@ The following additional software packages are installed:
 
 ### Implementation
 
-This should only be ran on freshly installed system.  If a LAMP installation already exists or if this server is already being used for other tasks, this script will likely break your server!  You have been warned!
+This should only be ran on fresh, base installation of the operating system.  If a LAMP installation already exists or if this server is already being used for other tasks, this script will likely break your server!  You have been warned!
 
 Download and setup the LAMP stack by:
+
 	cd /root
 	git clone https://github.com/stephenlang/bash-lamp-installer
 	cd bash-lamp-installer
