@@ -37,8 +37,11 @@
 # Base Package Installation Tasks
 #################################################
 
-# Install base packages
+# Update system
 apt-get update
+apt-get -y upgrade
+
+# Install base packages
 apt-get install -y cron openssh-server vim ntp sysstat man-db wget rsync screen
 
 
@@ -111,6 +114,12 @@ sed -i "s/\$register_globals/$register_globals/g" /etc/php5/apache2/php.ini
 sed -i "s/\$post_max_size/$post_max_size/g" /etc/php5/apache2/php.ini
 sed -i "s/\$upload_max_filesize/$upload_max_filesize/g" /etc/php5/apache2/php.ini
 sed -i "s@\$session_save_path@$session_save_path@g" /etc/php5/apache2/php.ini
+
+# Secure /server-status behind htaccess
+srvstatus_htuser=serverinfo
+srvstatus_htpass=`< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c16`
+echo "$srvstatus_htuser $srvstatus_htpass" > /root/.serverstatus
+htpasswd -b -c /etc/apache2/status-htpasswd $srvstatus_htuser $srvstatus_htpass
 
 # Restart Apache to apply new settings
 service apache2 restart
@@ -221,7 +230,6 @@ echo "30 3 * * * root /usr/sbin/holland -q bk" > /etc/cron.d/holland
 /usr/sbin/holland -q bk
 
 
-
 #################################################
 # PHPMyAdmin Installation Tasks
 #################################################
@@ -250,5 +258,70 @@ service apache2 restart
 
 
 #################################################
-# Security Server Package Installation Tasks
+# Setup Report
 #################################################
+
+# Setup report variables
+txtbld=$(tput bold)
+lightblue=`tput setaf 6`
+nc=`tput sgr0`
+real_ip=`curl --silent icanhazip.com 2>&1`
+
+# Generate setup report
+
+cat << EOF > /root/setup_report
+
+${txtbld}---------------------------------------------------------------
+                 LAMP Installation Complete
+---------------------------------------------------------------${nc}
+
+The LAMP installation has been completed!  Some important information is
+posted below.  A copy of this setup report exists in /root/setup_report.
+
+${txtbld}---------------------------------------------------------------
+                 Security Credentials
+---------------------------------------------------------------${nc}
+
+${lightblue}Apache Server Status URL:${nc}   http://$real_ip/server-status
+${lightblue}Apache Server Status User:${nc}  serverinfo
+${lightblue}Apache Server Status Pass:${nc}  $srvstatus_htpass
+
+${lightblue}PHPMyAdmin URL:${nc}  http://$real_ip/phpmyadmin
+${lightblue}PHPMyAdmin User:${nc} serverinfo / root
+${lightblue}PHPMyAdmin Pass:${nc} $htpass / $mysqlrootpassword
+
+${lightblue}MySQL Root User:${nc}  root 
+${lightblue}MySQL Root Pass:${nc}  $mysqlrootpassword
+
+** For security purposes, there is an htaccess file in front of phpmyadmin.
+So when the popup window appears, use the serverinfo username and password. 
+Once your on the phpmyadmin landing page, use the root MySQL credentials.
+
+If you lose this setup report, the credentails can be found in:
+${lightblue}Apache Server Status:${nc}  /root/.serverstatus
+${lightblue}PHPMyAdmin:${nc}            /root/.phpmyadmin
+${lightblue}MySQL Credentials:${nc}     /root/.my.cnf
+
+${txtbld}---------------------------------------------------------------
+                 Nightly MySQL Backups
+---------------------------------------------------------------${nc}
+
+MySQL backups are being performed via Holland (www.hollandbackup.org) and
+is set to run nightly at 3:30AM server time.  
+
+The critical information about Holland is below:
+
+${lightblue}Backup directory:${nc}  /var/lib/mysqlbackup
+${lightblue}Backups run time:${nc}  Nightly at 3:30AM server time
+${lightblue}Retention rate:${nc}    7 days
+
+${lightblue}Holland log file:${nc}  /var/log/holland/holland.log
+${lightblue}Holland configs:${nc}   /etc/holland/holland.conf
+                   /etc/holland/backupsets/default.conf
+                   /etc/cron.d/holland
+
+${txtbld}---------------------------------------------------------------${nc}
+
+EOF
+
+cat /root/setup_report

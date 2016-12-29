@@ -19,6 +19,15 @@ ExtendedStatus On
     <IfModule mod_rewrite.c>
         RewriteEngine off
     </IfModule>
+
+    AuthUserFile /etc/apache2/status-htpasswd
+    AuthName "Password protected"
+    AuthType Basic
+    Require valid-user
+
+    # Allow password-less access for allowed IPs
+    Satisfy any
+
 </Location>
 
 </IfModule>

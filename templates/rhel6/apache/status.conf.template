@@ -12,22 +12,22 @@ ExtendedStatus On
 # access from other hosts.
 #
 <Location /server-status>
-    SetHandler server-status
-    Order deny,allow
-    Deny from all
-    Allow from localhost ip6-localhost
-    <IfModule mod_rewrite.c>
-        RewriteEngine off
-    </IfModule>
+     SetHandler server-status
+     Order deny,allow
+     Deny from all
+     Allow from localhost ip6-localhost
+     <IfModule mod_rewrite.c>
+          RewriteEngine off
+     </IfModule>
+     Allow from 127.0.0.1
 
-    AuthUserFile /etc/apache2/status-htpasswd
-    AuthName "Password protected"
-    AuthType Basic
-    Require valid-user
+     AuthUserFile /etc/httpd/status-htpasswd
+     AuthName "Password protected"
+     AuthType Basic
+     Require valid-user
 
-    # Allow password-less access for allowed IPs
-    Satisfy any
-
+     # Allow password-less access for allowed IPs
+     Satisfy any
 </Location>
 
 </IfModule>
