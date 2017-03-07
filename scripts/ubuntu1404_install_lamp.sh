@@ -265,7 +265,7 @@ service apache2 restart
 txtbld=$(tput bold)
 lightblue=`tput setaf 6`
 nc=`tput sgr0`
-real_ip=`curl --silent icanhazip.com 2>&1`
+real_ip=`curl --silent -4 icanhazip.com 2>&1`
 
 # Generate setup report
 
