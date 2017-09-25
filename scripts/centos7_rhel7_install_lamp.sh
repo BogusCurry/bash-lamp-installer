@@ -45,7 +45,6 @@ rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-10.noarc
 rpm -ivh https://dl.iuscommunity.org/pub/ius/stable/CentOS/7/x86_64/ius-release-1.0-15.ius.centos7.noarch.rpm
 
 # Check to ensure EPEL repo was installed
-
 if [ `rpm -qa |grep -i epel-release | wc -l` -lt 1 ]; then
 	echo "Error:  EPEL repository could not be installed."
 	echo "Please install EPEL repository and rerun script."
@@ -55,7 +54,6 @@ if [ `rpm -qa |grep -i epel-release | wc -l` -lt 1 ]; then
 fi
 
 # Check to ensure IUS repo was installed
-
 if [ `rpm -qa |grep -i ius-release | wc -l` -lt 1 ]; then
 	echo "Error:  IUS repository could not be installed."
 	echo "Please install IUS repository and rerun script."
